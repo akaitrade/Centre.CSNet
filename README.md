@@ -30,6 +30,7 @@ var connect_ = new Connector("95.111.224.219", 9091);
 var balance = connect_.balance("4SFfA1S2xfA3BdgkTn2tK14yDhLuD11RVz78kqx35jct");
 ```
 With only 2 Lines of code we can now retrieve a balance from the blockchain that easy !
+
 Sending Transaction
 --
 In the next example we are going to send an transaction with the native currency CS
