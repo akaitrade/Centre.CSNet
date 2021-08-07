@@ -16,49 +16,96 @@ namespace NetCS
             port = port_;
         }
         ///<summary>
-        ///Retrieve the balance of a default CS symbol
+        ///Retrieve a certain Transaction with pool and index number
         ///</summary>
-        public string balance(string PubKey)
+        public NodeApi.TransactionGetResult TransactionGet(long PoolSeq, int Index)
         {
             try
             {
-                var client_ = new Client(ip, port, PubKey, "", PubKey);
-                var data = client_.WalletGetBalance();
-                if (data.Status.Code == 0)
-                {
-                    return data.Balance.Integral.ToString() + "." + data.Balance.Integral.ToString();
-                }
-                else
-                {
-                    return "ERROR";
-                }
-
-
-
+                Client client_ = new Client(ip, port, "", "", "");
+                return client_.TransactionGet(new NodeApi.TransactionId { Index = Index, PoolSeq = PoolSeq });
+                
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                return "ERROR";
-
+                return new NodeApi.TransactionGetResult { Status = new NodeApi.APIResponse { Code = 1, Message = e.ToString() } };
+            }
+        }
+        ///<summary>
+        ///Retrieve the balance of a default CS symbol
+        ///</summary>
+        public NodeApi.WalletBalanceGetResult WalletGetBalance(string PubKey)
+        {
+            try
+            {
+                Client client_ = new Client(ip, port, PubKey, "", PubKey);
+                return client_.WalletGetBalance();
+            }
+            catch (Exception e)
+            {
+                return new NodeApi.WalletBalanceGetResult { Status = new NodeApi.APIResponse { Code = 1, Message = e.ToString() } } ;
+            }
+        }
+        ///<summary>
+        ///Retrieve Transaction Count of the give Wallet
+        ///</summary>
+        public NodeApi.WalletTransactionsCountGetResult WalletTransactionsCountGet(string PubKey)
+        {
+            try
+            {
+                Client client_ = new Client(ip, port, PubKey, "", PubKey);
+                return client_.WalletTransactionsCountGet();
+            }
+            catch (Exception e)
+            {
+                return new NodeApi.WalletTransactionsCountGetResult { Status = new NodeApi.APIResponse { Code = 1, Message = e.ToString() } };
+            }
+        }
+        ///<summary>
+        ///WalletDataGet Information unknown
+        ///</summary>
+        public NodeApi.WalletDataGetResult WalletDataGet(string PubKey)
+        {
+            try
+            {
+                Client client_ = new Client(ip, port, PubKey, "", PubKey);
+                return client_.WalletDataGet();
+            }
+            catch (Exception e)
+            {
+                return new NodeApi.WalletDataGetResult { Status = new NodeApi.APIResponse { Code = 1, Message = e.ToString() } };
+            }
+        }
+        ///<summary>
+        ///StatsGet
+        ///</summary>
+        public NodeApi.StatsGetResult StatsGet(string PubKey)
+        {
+            try
+            {
+                Client client_ = new Client(ip, port, PubKey, "", PubKey);
+                return client_.StatsGet();
+            }
+            catch (Exception e)
+            {
+                return new NodeApi.StatsGetResult { Status = new NodeApi.APIResponse { Code = 1, Message = e.ToString() } };
             }
         }
         ///<summary>
         ///Retrieve history for a given publickey
+        ///Optional Values Offset/Limit
+        ///Default retrieves 10 Latest Transactions
         ///</summary>
-        public List<NodeApi.SealedTransaction> FetchHistory(string PubKey)
+        public NodeApi.TransactionsGetResult TransactionsGet(string PubKey,long OffSet = 0,long Limit = 10)
         {
             try
             {
-                var client_ = new Client(ip, port, PubKey, "", PubKey);
-                var data = client_.TransactionsGet(0, 10);
-
-                if (data.Status.Code == 0){return data.Transactions;}
-                else{return new List<NodeApi.SealedTransaction>();}
+                Client client_ = new Client(ip, port, PubKey, "", PubKey);
+                return client_.TransactionsGet(OffSet, Limit);
             }
             catch (Exception e)
             {
-                return new List<NodeApi.SealedTransaction>();
+                return new NodeApi.TransactionsGetResult { Status = new NodeApi.APIResponse { Code = 1, Message = e.ToString() } };
 
             }
         }
@@ -69,7 +116,7 @@ namespace NetCS
         {
             try
             {
-                var client_ = new Client(ip, port, PublicKey, PrivateKey, Target);
+                Client client_ = new Client(ip, port, PublicKey, PrivateKey, Target);
                 if (fraction.ToString().Length < 18)
                 {
                     var tempvar = fraction.ToString();
@@ -82,8 +129,7 @@ namespace NetCS
 
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                return new NodeApi.TransactionFlowResult { Status = new NodeApi.APIResponse { Code = 1 } };
+                return new NodeApi.TransactionFlowResult { Status = new NodeApi.APIResponse { Code = 1 , Message = e.ToString() } };
 
             }
         }
@@ -100,7 +146,7 @@ namespace NetCS
             }
             catch (Exception e)
             {
-                return new NodeApi.SyncStateResult { Status = new NodeApi.APIResponse { Code = 1 } };
+                return new NodeApi.SyncStateResult { Status = new NodeApi.APIResponse { Code = 1 , Message = e.ToString() } };
 
             }
         }
