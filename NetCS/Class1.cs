@@ -7,7 +7,6 @@ namespace NetCS
         public static void t()
         {
             var x = new Connector("", 9090);
-            
         }
         
 

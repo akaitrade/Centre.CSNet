@@ -65,7 +65,7 @@ namespace NetCS
         ///<summary>
         ///Send a Transaction with the default CS Symbol to the Credits Blockchain
         ///</summary>
-        public NodeApi.TransactionFlowResult SendTransaction(int Integeral, long fraction, string PublicKey, string PrivateKey, string Target)
+        public NodeApi.TransactionFlowResult SendTransaction(int Integeral, long fraction, string PublicKey, string PrivateKey, string Target,string userdata = "",long TxsID = 0)
         {
             try
             {
@@ -84,6 +84,23 @@ namespace NetCS
             {
                 Console.WriteLine(e);
                 return new NodeApi.TransactionFlowResult { Status = new NodeApi.APIResponse { Code = 1 } };
+
+            }
+        }
+        ///<summary>
+        ///Checks if the node is synced with the blockchain.
+        ///This Function also returns Current Round and Last Block information
+        ///</summary>
+        public NodeApi.SyncStateResult SyncState()
+        {
+            try
+            {
+                Client client_ = new Client(ip, port, "", "", "");
+                return client_.SyncStateGet();
+            }
+            catch (Exception e)
+            {
+                return new NodeApi.SyncStateResult { Status = new NodeApi.APIResponse { Code = 1 } };
 
             }
         }
