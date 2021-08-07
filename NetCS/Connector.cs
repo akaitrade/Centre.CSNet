@@ -151,5 +151,23 @@ namespace NetCS
 
             }
         }
+        ///<summary>
+        ///Deploys Smart Contract
+        ///Without Smart Contract code it will deploy default contract
+        ///</summary>
+        public NodeApi.TransactionFlowResult DeploySmartContract (int Integeral, long fraction, double fee, string PublicKey, string PrivateKey, string Target, string smcode = "", long TxsID = 0)
+        {
+            try
+            {
+                Client client_ = new Client(ip, port, PublicKey, PrivateKey, Target);
+                if (TxsID == 0) { TxsID = client_.WalletTransactionsCountGet().LastTransactionInnerId + 1; };
+                return client_.DeploySmartContract(smcode,fee,TxsID);
+            }
+            catch (Exception e)
+            {
+                return new NodeApi.TransactionFlowResult { Status = new NodeApi.APIResponse { Code = 1, Message = e.ToString() } };
+            }
+
+        }
     }
 }

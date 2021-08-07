@@ -80,6 +80,142 @@ namespace NetCS
             return api.TransactionsGet(keys.PublicKeyBytes,offset, limit);
         }
 
+        public ActualFeeGetResult ActualFeeGet(int transactionsize)
+        {
+            return api.ActualFeeGet(transactionsize);
+        }
+
+        public WalletIdGetResult WalletIdGet(byte[] address)
+        {
+            return api.WalletIdGet(address);
+        }
+
+        public TransactionsGetResult TransactionsListGet(long offset,long limit)
+        {
+            return api.TransactionsListGet(offset,limit);
+        }
+
+        public PoolListGetResult PoolListGetStable(long sequence, long limit)
+        {
+            return api.PoolListGetStable(sequence, limit);
+        }
+
+        public PoolListGetResult PoolListGet(long offset, long limit)
+        {
+            return api.PoolListGet(offset, limit);
+        }
+
+        public PoolInfoGetResult PoolInfoGet(long sequence, long limit)
+        {
+            return api.PoolInfoGet(sequence, limit);
+        }
+
+        public PoolTransactionsGetResult PoolTransactionsGet(long sequence,long offset,long limit)
+        {
+            return api.PoolTransactionsGet(sequence, offset, limit);
+        }
+
+        public SmartContractGetResult SmartContractGet(byte[] address)
+        {
+            return api.SmartContractGet(address);
+        }
+
+        public SmartContractsListGetResult SmartContractsListGet(byte[] deployer,long offset,long limit)
+        {
+            return api.SmartContractsListGet(deployer, offset, limit);
+        }
+
+        public SmartContractAddressesListGetResult SmartContractAddressesListGet(byte[] deployer)
+        {
+            return api.SmartContractAddressesListGet(deployer);
+        }
+
+        public byte[] WaitForBlock(byte[] obsolete)
+        {
+            return api.WaitForBlock(obsolete);
+        }
+
+        public TransactionId WaitForSmartTransaction(byte[] obsolete)
+        {
+            return api.WaitForSmartTransaction(obsolete);
+        }
+
+        public SmartContractsListGetResult SmartContractsAllListGet(long offset,long limit)
+        {
+            return api.SmartContractsAllListGet(offset, limit);
+        }
+
+        public TransactionsStateGetResult TransactionsStateGet(byte[] address, List<long> id)
+        {
+            return api.TransactionsStateGet(address, id);
+        }
+
+        public ContractAllMethodsGetResult ContractAllMethodsGet(List<NodeApi.ByteCodeObject> byteCodeObjects)
+        {
+            return api.ContractAllMethodsGet(byteCodeObjects);
+        }
+
+        public SmartMethodParamsGetResult SmartMethodParamsGet(byte[] address,long id)
+        {
+            return api.SmartMethodParamsGet(address, id);
+        }
+
+        public SmartContractDataResult SmartContractDataGet(byte[] address)
+        {
+            return api.SmartContractDataGet(address);
+        }
+
+        public SmartContractCompileResult SmartContractCompile(string smcode)
+        {
+            return api.SmartContractCompile(smcode);
+        }
+
+        public TokenBalancesResult TokenBalancesGet(byte[] address)
+        {
+            return api.TokenBalancesGet(address);
+        }
+
+        public TokenTransfersResult TokenTransfersGet(byte[] token, long offset, long limit)
+        {
+            return api.TokenTransfersGet(token, offset, limit);
+        }
+        public TokenTransfersResult TokenTransferGet(byte[] token, TransactionId id)
+        {
+            return api.TokenTransferGet(token, id);
+        }
+        public TokenTransfersResult TokenTransfersListGet(long offset, long limit)
+        {
+            return api.TokenTransfersListGet(offset, limit);
+        }
+        public TokenTransfersResult TokenWalletTransfersGet(byte[] token, byte[] address, long offset, long limit)
+        {
+            return api.TokenWalletTransfersGet(token, address,offset,limit);
+        }
+        public TokenTransactionsResult TokenTransactionsGet(byte[] token, long offset, long limit)
+        {
+            return api.TokenTransactionsGet(token, offset, limit);
+        }
+        public TokenInfoResult TokenInfoGet(byte[] token)
+        {
+            return api.TokenInfoGet(token);
+        }
+        public TokenHoldersResult TokenHoldersGet(byte[] token, long offset, long limit, TokenHoldersSortField order, bool desc)
+        {
+            return api.TokenHoldersGet(token,offset,limit,order,desc);
+        }
+        public TokensListResult TokensListGet(long offset, long limit, TokensListSortField order, bool desc, TokenFilters filters)
+        {
+            return api.TokensListGet(offset, limit, order, desc, filters);
+        }
+        public WalletsGetResult WalletsGet(long offset, long limit, sbyte ordCol, bool desc)
+        {
+            return api.WalletsGet(offset, limit, ordCol, desc);
+        }
+        public TrustedGetResult TrustedGet(int page)
+        {
+            return api.TrustedGet(page);
+        }
+
         public TransactionFlowResult TransferCoins(int integral, long fraction, double fee,byte[] userdata,long txsid)
         {
             if(userdata == null)
@@ -90,12 +226,11 @@ namespace NetCS
             {
                 return api.TransactionFlow(CreateTransactionWithUserData(integral, fraction, fee,userdata, txsid));
             }
-            
         }
 
-        public TransactionFlowResult DeploySmartContract(string smCode)
+        public TransactionFlowResult DeploySmartContract(string smCode,double fee, long txsid)
         {
-            return api.TransactionFlow(CreateTransactionWithSmartContract(smCode));
+            return api.TransactionFlow(CreateTransactionWithSmartContract(smCode,fee,txsid));
         }
 
         private Transaction CreateTransaction(int integral, long fraction, double fee,long txsid)
@@ -167,18 +302,18 @@ namespace NetCS
             return arr;
         }
 
-        private Transaction CreateTransactionWithSmartContract(string smCode)
+        private Transaction CreateTransactionWithSmartContract(string smCode, double fee, long txsid)
         {
             if (smCode == "")
                 smCode =
                 "import com.credits.scapi.annotations.*; import com.credits.scapi.v0.*; public class MySmartContract extends SmartContract { public MySmartContract() {} public String hello2(String say) { return \"Hello\" + say; } }";
 
             var transaction = new Transaction();
-            transaction.Id = api.WalletTransactionsCountGet(keys.PublicKeyBytes).LastTransactionInnerId + 1;
+            transaction.Id = txsid;
             transaction.Source = keys.PublicKeyBytes;
             //transaction.Target = keys.PublicKeyBytes;
             transaction.Amount = new Amount(0, 0);
-            transaction.Fee = new AmountCommission(Fee(1.0));
+            transaction.Fee = new AmountCommission(Fee(fee));
             transaction.Currency = 1;
 
             var tarr = new byte[6];
