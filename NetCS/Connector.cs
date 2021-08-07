@@ -79,11 +79,11 @@ namespace NetCS
         ///<summary>
         ///StatsGet
         ///</summary>
-        public NodeApi.StatsGetResult StatsGet(string PubKey)
+        public NodeApi.StatsGetResult StatsGet()
         {
             try
             {
-                Client client_ = new Client(ip, port, PubKey, "", PubKey);
+                Client client_ = new Client(ip, port, "", "", "");
                 return client_.StatsGet();
             }
             catch (Exception e)
@@ -111,8 +111,9 @@ namespace NetCS
         }
         ///<summary>
         ///Send a Transaction with the default CS Symbol to the Credits Blockchain
+        ///Optional Values : UserData/LastTransactionID
         ///</summary>
-        public NodeApi.TransactionFlowResult SendTransaction(int Integeral, long fraction, string PublicKey, string PrivateKey, string Target,string userdata = "",long TxsID = 0)
+        public NodeApi.TransactionFlowResult SendTransaction(int Integeral, long fraction, double fee ,string PublicKey, string PrivateKey, string Target, byte[] UserData = null, long TxsID = 0)
         {
             try
             {
@@ -124,9 +125,9 @@ namespace NetCS
                     foreach (int value in Enumerable.Range(1, extracount)) { tempvar = tempvar + "0"; }
                     fraction = Convert.ToInt64(tempvar);
                 }
-                return client_.TransferCoins(Integeral, fraction, 1.0);
+                if(TxsID == 0) { TxsID = client_.WalletTransactionsCountGet().LastTransactionInnerId + 1; };
+                return client_.TransferCoins(Integeral, fraction, fee, UserData, TxsID);
             }
-
             catch (Exception e)
             {
                 return new NodeApi.TransactionFlowResult { Status = new NodeApi.APIResponse { Code = 1 , Message = e.ToString() } };

@@ -45,11 +45,6 @@ namespace NetCS
 
         }
 
-        public async Task Transferasync(int integral, long fraction, double fee)
-        {
-            api.TransactionFlow(CreateTransaction(integral, fraction, fee));
-        }
-
         public WalletBalanceGetResult WalletGetBalance()
         {
             return api.WalletBalanceGet(keys.PublicKeyBytes);
@@ -80,25 +75,22 @@ namespace NetCS
             return api.SyncStateGet();
         }
        
-
         public TransactionsGetResult TransactionsGet(long offset, long limit)
         {
             return api.TransactionsGet(keys.PublicKeyBytes,offset, limit);
         }
 
-        public TransactionFlowResult TransferCoins(int integral, long fraction, double fee)
+        public TransactionFlowResult TransferCoins(int integral, long fraction, double fee,byte[] userdata,long txsid)
         {
-            return api.TransactionFlow(CreateTransaction(integral, fraction, fee));
-        }
-
-        public TransactionFlowResult SendMessage(int integral, long fraction, double fee, byte[] message)
-        {
-            return api.TransactionFlow(CreateMessage(integral, fraction, fee,message));
-        }
-
-        public TransactionFlowResult SendMessage_Incremental(int integral, long fraction, double fee, byte[] message,long txsid)
-        {
-            return api.TransactionFlow(CreateMessagewithincremental(integral, fraction, fee, message,txsid));
+            if(userdata == null)
+            {
+                return api.TransactionFlow(CreateTransaction(integral, fraction, fee, txsid));
+            }
+            else
+            {
+                return api.TransactionFlow(CreateTransactionWithUserData(integral, fraction, fee,userdata, txsid));
+            }
+            
         }
 
         public TransactionFlowResult DeploySmartContract(string smCode)
@@ -106,10 +98,10 @@ namespace NetCS
             return api.TransactionFlow(CreateTransactionWithSmartContract(smCode));
         }
 
-        private Transaction CreateTransaction(int integral, long fraction, double fee)
+        private Transaction CreateTransaction(int integral, long fraction, double fee,long txsid)
         {
             var transaction = new Transaction();
-            transaction.Id = api.WalletTransactionsCountGet(keys.PublicKeyBytes).LastTransactionInnerId + 1;
+            transaction.Id = txsid;
             transaction.Source = keys.PublicKeyBytes;
             transaction.Target = keys.TargetKeyBytes;
             transaction.Amount = new Amount(integral, fraction);
@@ -134,53 +126,17 @@ namespace NetCS
             return transaction;
         }
 
-        private Transaction CreateMessage(int integral, long fraction, double fee, byte[] message)
+        private Transaction CreateTransactionWithUserData(int integral, long fraction, double fee, byte[] userdata, long txsid)
         {
             var transaction = new Transaction();
-            transaction.Id = api.WalletTransactionsCountGet(keys.PublicKeyBytes).LastTransactionInnerId + 1;
-            transaction.Source = keys.PublicKeyBytes;
-            transaction.Target = keys.TargetKeyBytes;
-            transaction.Amount = new Amount(integral, fraction);
-            transaction.Fee = new AmountCommission(Fee(fee));
-            transaction.Currency = 1;
-            transaction.UserFields = message;
-            var lenght = message.Length;
-            var bytes = new byte[90];
-            Array.Copy(BitConverter.GetBytes(transaction.Id), 0, bytes, 0, 6);
-            Array.Copy(transaction.Source, 0, bytes, 6, 32);
-            Array.Copy(transaction.Target, 0, bytes, 38, 32);
-            Array.Copy(BitConverter.GetBytes(transaction.Amount.Integral), 0, bytes, 70, 4);
-            Array.Copy(BitConverter.GetBytes(transaction.Amount.Fraction), 0, bytes, 74, 8);
-            Array.Copy(BitConverter.GetBytes(transaction.Fee.Commission), 0, bytes, 82, 2);
-            bytes[84] = 1;
-            bytes[85] = 1;
-            Array.Copy(BitConverter.GetBytes(lenght),0,bytes,86,4);
-
-            byte[] combined = new byte[bytes.Length + transaction.UserFields.Length];
-
-            Array.Copy(bytes, 0, combined, 0, bytes.Length);
-            Array.Copy(transaction.UserFields, 0, combined, bytes.Length, transaction.UserFields.Length);
-
-            var signature = Ed25519.Sign(combined, keys.PrivateKeyBytes);
-            var verifyResult = Ed25519.Verify(signature, combined, keys.PublicKeyBytes);
-            if (!verifyResult) throw new Exception("Signature could not be verified");
-
-            transaction.Signature = signature;
-            return transaction;
-        }
-
-        private Transaction CreateMessagewithincremental(int integral, long fraction, double fee, byte[] message,long txsid)
-        {
-            var transaction = new Transaction();
-            //transaction.Id = api.WalletTransactionsCountGet(keys.PublicKeyBytes).LastTransactionInnerId + 1;
             transaction.Id = txsid;
             transaction.Source = keys.PublicKeyBytes;
             transaction.Target = keys.TargetKeyBytes;
             transaction.Amount = new Amount(integral, fraction);
             transaction.Fee = new AmountCommission(Fee(fee));
             transaction.Currency = 1;
-            transaction.UserFields = message;
-            var lenght = message.Length;
+            transaction.UserFields = userdata;
+            var Length = userdata.Length;
             var bytes = new byte[90];
             Array.Copy(BitConverter.GetBytes(transaction.Id), 0, bytes, 0, 6);
             Array.Copy(transaction.Source, 0, bytes, 6, 32);
@@ -190,7 +146,7 @@ namespace NetCS
             Array.Copy(BitConverter.GetBytes(transaction.Fee.Commission), 0, bytes, 82, 2);
             bytes[84] = 1;
             bytes[85] = 1;
-            Array.Copy(BitConverter.GetBytes(lenght), 0, bytes, 86, 4);
+            Array.Copy(BitConverter.GetBytes(Length),0,bytes,86,4);
 
             byte[] combined = new byte[bytes.Length + transaction.UserFields.Length];
 
