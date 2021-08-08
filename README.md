@@ -40,3 +40,6 @@ Console.WriteLine(connect_.SendTransaction(1, 0, "Enter Sender Publickey", "Ente
 ```
 Well look at that ! You now sended an transaction on the Credits Blockchain great job ;)
 
+## Contribution
+
+Everyone is free to help me out as this will be a community driven Library !
