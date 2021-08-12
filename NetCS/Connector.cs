@@ -77,8 +77,9 @@ namespace NetCS
             }
         }
         ///<summary>
-        ///StatsGet
+        ///StatsGet Retrieve total counts of Blockchain
         ///</summary>
+        [Obsolete("StatsGet not yet implemented")]
         public NodeApi.StatsGetResult StatsGet()
         {
             try
@@ -113,7 +114,7 @@ namespace NetCS
         ///Send a Transaction with the default CS Symbol to the Credits Blockchain
         ///Optional Values : UserData/LastTransactionID
         ///</summary>
-        public NodeApi.TransactionFlowResult SendTransaction(int Integeral, long fraction, double fee ,string PublicKey, string PrivateKey, string Target, byte[] UserData = null, long TxsID = 0)
+        public NodeApi.TransactionFlowResult SendTransaction(int Integeral, long fraction, double fee ,string PublicKey, string PrivateKey, string Target, byte[] UserData = null, long TxsID = 0, NodeApi.Transaction txs = null)
         {
             try
             {
@@ -126,7 +127,7 @@ namespace NetCS
                     fraction = Convert.ToInt64(tempvar);
                 }
                 if(TxsID == 0) { TxsID = client_.WalletTransactionsCountGet().LastTransactionInnerId + 1; };
-                return client_.TransferCoins(Integeral, fraction, fee, UserData, TxsID);
+                return client_.TransferCoins(Integeral, fraction, fee, UserData, TxsID,txs);
             }
             catch (Exception e)
             {

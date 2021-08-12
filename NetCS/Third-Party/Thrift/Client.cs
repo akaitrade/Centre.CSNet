@@ -216,15 +216,19 @@ namespace NetCS
             return api.TrustedGet(page);
         }
 
-        public TransactionFlowResult TransferCoins(int integral, long fraction, double fee,byte[] userdata,long txsid)
+        public TransactionFlowResult TransferCoins(int integral, long fraction, double fee,byte[] userdata,long txsid, Transaction txs)
         {
-            if(userdata == null)
+            if(txs != null)
             {
-                return api.TransactionFlow(CreateTransaction(integral, fraction, fee, txsid));
+                return api.TransactionFlow(txs);
+            }
+            if(userdata != null)
+            {
+                return api.TransactionFlow(CreateTransactionWithUserData(integral, fraction, fee, userdata, txsid));
             }
             else
             {
-                return api.TransactionFlow(CreateTransactionWithUserData(integral, fraction, fee,userdata, txsid));
+                return api.TransactionFlow(CreateTransaction(integral, fraction, fee, txsid));
             }
         }
 

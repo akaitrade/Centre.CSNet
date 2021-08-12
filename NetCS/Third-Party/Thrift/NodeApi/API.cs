@@ -24,7 +24,7 @@ namespace NodeApi
       WalletIdGetResult WalletIdGet(byte[] address);
       WalletTransactionsCountGetResult WalletTransactionsCountGet(byte[] address);
       WalletBalanceGetResult WalletBalanceGet(byte[] address);
-      TransactionGetResult TransactionGet(TransactionId transactionId);
+      TransactionGetResult TransactionGet(TransactionId transactionId); 
       TransactionsGetResult TransactionsGet(byte[] address, long offset, long limit);
       TransactionFlowResult TransactionFlow(Transaction transaction);
       TransactionsGetResult TransactionsListGet(long offset, long limit);
