@@ -13,6 +13,11 @@ After installing it's time to actually use it. To get started we have to add the
 
 Centre is providing an easy way of connecting to the Credits Blockchain where the goal is to limit the time needed for new Developers intergrating the Credits Blockchain into there projects
 
+## Detailed Documentation
+
+For All Centre build Libraries there is detailed documentation which can be found here:
+https://centr.gitbook.io/netcs
+
 ## Connector Object
 
 In order to get the library working we first need to initialize the Connector object
