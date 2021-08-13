@@ -294,12 +294,12 @@ namespace NetCS
         ///Optional Values Offset/Limit
         ///Default retrieves 10 Latest Pool Transactions
         ///</summary>
-        public NodeApi.SmartContractsListGetResult SmartContractsListGet(byte[] Deployer, long Offset = 0, long Limit = 10)
+        public NodeApi.SmartContractsListGetResult SmartContractsListGet(string Deployer, long Offset = 0, long Limit = 10)
         {
             try
             {
                 Client client_ = new Client(ip, port, "", "", "");
-                return client_.SmartContractsListGet(Deployer, Offset, Limit);
+                return client_.SmartContractsListGet(Base58Check.Base58CheckEncoding.DecodePlain(Deployer), Offset, Limit);
             }
             catch (Exception e)
             {
@@ -310,12 +310,12 @@ namespace NetCS
         ///<summary>
         ///Retrieve Transactions State based on id
         ///</summary>
-        public NodeApi.TransactionsStateGetResult TransactionsStateGet(byte[] Address, List<long> Id)
+        public NodeApi.TransactionsStateGetResult TransactionsStateGet(string Address, List<long> Id)
         {
             try
             {
                 Client client_ = new Client(ip, port, "", "", "");
-                return client_.TransactionsStateGet(Address, Id);
+                return client_.TransactionsStateGet(Base58Check.Base58CheckEncoding.DecodePlain(Address), Id);
             }
             catch (Exception e)
             {
