@@ -276,12 +276,12 @@ namespace NetCS
         ///<summary>
         ///Retrieve Single SmartContract
         ///</summary>
-        public NodeApi.SmartContractGetResult SmartContractGet(byte[] Address)
+        public NodeApi.SmartContractGetResult SmartContractGet(string Address)
         {
             try
             {
                 Client client_ = new Client(ip, port, "", "", "");
-                return client_.SmartContractGet(Address);
+                return client_.SmartContractGet(Base58Check.Base58CheckEncoding.DecodePlain(Address));
             }
             catch (Exception e)
             {
