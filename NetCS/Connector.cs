@@ -239,15 +239,15 @@ namespace NetCS
 
         ///<summary>
         ///Retrieve Pool Info 
-        ///Optional Values Offset/Limit
+        ///Optional Values Sequence/Limit
         ///Default retrieves 10 Latest Pool
         ///</summary>
-        public NodeApi.PoolInfoGetResult PoolInfoGet(long Offset = 0, long Limit = 10)
+        public NodeApi.PoolInfoGetResult PoolInfoGet(long Sequence = 0, long Limit = 10)
         {
             try
             {
                 Client client_ = new Client(ip, port, "", "", "");
-                return client_.PoolInfoGet(Offset, Limit);
+                return client_.PoolInfoGet(Sequence, Limit);
             }
             catch (Exception e)
             {

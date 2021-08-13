@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <PackOnBuild>true</PackOnBuild>
     <PackageId>Centr.NetCS</PackageId>
-    <PackageVersion>0.1.0.24-Beta</PackageVersion>
+    <PackageVersion>0.2.0.1-Beta</PackageVersion>
     <Authors>BK</Authors>
     <Copyright>Centre</Copyright>
     <PackageIconUrl>https://centr.tech/wp-content/uploads/cropped-Centr_Blockchain_Favicon-32x32.png</PackageIconUrl>
