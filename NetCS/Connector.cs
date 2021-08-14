@@ -461,12 +461,12 @@ namespace NetCS
         ///Optional Values Offset/Limit
         ///Default Offset = 0 Limit = 10
         ///</summary>
-        public NodeApi.TokenTransfersResult TokenWalletTransfersGet(string Token, byte[] Address ,long Offset = 0, long Limit = 10)
+        public NodeApi.TokenTransfersResult TokenWalletTransfersGet(string Token, string Address ,long Offset = 0, long Limit = 10)
         {
             try
             {
                 Client client_ = new Client(ip, port, "", "", "");
-                return client_.TokenWalletTransfersGet(Base58Check.Base58CheckEncoding.DecodePlain(Token),Address,Offset, Limit);
+                return client_.TokenWalletTransfersGet(Base58Check.Base58CheckEncoding.DecodePlain(Token),Base58Check.Base58CheckEncoding.DecodePlain(Address),Offset, Limit);
             }
             catch (Exception e)
             {
