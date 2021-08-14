@@ -310,6 +310,7 @@ namespace NetCS
         ///<summary>
         ///Retrieve Transactions State based on id
         ///</summary>
+        [Obsolete("TransactionsStateGet not yet implemented")]
         public NodeApi.TransactionsStateGetResult TransactionsStateGet(string Address, List<long> Id)
         {
             try
@@ -342,12 +343,12 @@ namespace NetCS
         ///<summary>
         ///Retrieve Method Parameters
         ///</summary>
-        public NodeApi.SmartMethodParamsGetResult SmartMethodParamsGet(byte[] Address, long Id)
+        public NodeApi.SmartMethodParamsGetResult SmartMethodParamsGet(string Address, long Id)
         {
             try
             {
                 Client client_ = new Client(ip, port, "", "", "");
-                return client_.SmartMethodParamsGet(Address,Id);
+                return client_.SmartMethodParamsGet(Base58Check.Base58CheckEncoding.DecodePlain(Address),Id);
             }
             catch (Exception e)
             {
@@ -358,12 +359,12 @@ namespace NetCS
         ///<summary>
         ///Retrieve Smart Contract Data
         ///</summary>
-        public NodeApi.SmartContractDataResult SmartContractDataGet(byte[] Address)
+        public NodeApi.SmartContractDataResult SmartContractDataGet(string Address)
         {
             try
             {
                 Client client_ = new Client(ip, port, "", "", "");
-                return client_.SmartContractDataGet(Address);
+                return client_.SmartContractDataGet(Base58Check.Base58CheckEncoding.DecodePlain(Address));
             }
             catch (Exception e)
             {
