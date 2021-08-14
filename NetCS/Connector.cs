@@ -391,12 +391,12 @@ namespace NetCS
         ///<summary>
         ///Retrieve All Token Balances
         ///</summary>
-        public NodeApi.TokenBalancesResult TokenBalancesGet(byte[] Address)
+        public NodeApi.TokenBalancesResult TokenBalancesGet(string Address)
         {
             try
             {
                 Client client_ = new Client(ip, port, "", "", "");
-                return client_.TokenBalancesGet(Address);
+                return client_.TokenBalancesGet(Base58Check.Base58CheckEncoding.DecodePlain(Address));
             }
             catch (Exception e)
             {
@@ -409,12 +409,12 @@ namespace NetCS
         ///Optional Values Offset/Limit
         ///Default retrieves 10 Latest Token Transfers
         ///</summary>
-        public NodeApi.TokenTransfersResult TokenTransfersGet(byte[] Token, long Offset = 0, long Limit = 10)
+        public NodeApi.TokenTransfersResult TokenTransfersGet(string Token, long Offset = 0, long Limit = 10)
         {
             try
             {
                 Client client_ = new Client(ip, port, "", "", "");
-                return client_.TokenTransfersGet(Token,Offset,Limit);
+                return client_.TokenTransfersGet(Base58Check.Base58CheckEncoding.DecodePlain(Token),Offset,Limit);
             }
             catch (Exception e)
             {
@@ -425,12 +425,12 @@ namespace NetCS
         ///<summary>
         ///Retrieve Single Token Transfer
         ///</summary>
-        public NodeApi.TokenTransfersResult TokenTransferGet(byte[] Token, NodeApi.TransactionId TxsID)
+        public NodeApi.TokenTransfersResult TokenTransferGet(string Token, NodeApi.TransactionId TxsID)
         {
             try
             {
                 Client client_ = new Client(ip, port, "", "", "");
-                return client_.TokenTransferGet(Token, TxsID);
+                return client_.TokenTransferGet(Base58Check.Base58CheckEncoding.DecodePlain(Token), TxsID);
             }
             catch (Exception e)
             {
@@ -461,12 +461,12 @@ namespace NetCS
         ///Optional Values Offset/Limit
         ///Default Offset = 0 Limit = 10
         ///</summary>
-        public NodeApi.TokenTransfersResult TokenWalletTransfersGet(byte[] Token, byte[] Address ,long Offset = 0, long Limit = 10)
+        public NodeApi.TokenTransfersResult TokenWalletTransfersGet(string Token, byte[] Address ,long Offset = 0, long Limit = 10)
         {
             try
             {
                 Client client_ = new Client(ip, port, "", "", "");
-                return client_.TokenWalletTransfersGet(Token,Address,Offset, Limit);
+                return client_.TokenWalletTransfersGet(Base58Check.Base58CheckEncoding.DecodePlain(Token),Address,Offset, Limit);
             }
             catch (Exception e)
             {
@@ -477,12 +477,12 @@ namespace NetCS
         ///<summary>
         ///Get Token Info 
         ///</summary>
-        public NodeApi.TokenInfoResult TokenInfoGet(byte[] Token)
+        public NodeApi.TokenInfoResult TokenInfoGet(string Token)
         {
             try
             {
                 Client client_ = new Client(ip, port, "", "", "");
-                return client_.TokenInfoGet(Token);
+                return client_.TokenInfoGet(Base58Check.Base58CheckEncoding.DecodePlain(Token));
             }
             catch (Exception e)
             {
@@ -495,12 +495,12 @@ namespace NetCS
         ///Optional Values Offset/Limit
         ///Default Offset = 0 Limit = 10
         ///</summary>
-        public NodeApi.TokenHoldersResult TokenHoldersGet(byte[] Token, NodeApi.TokenHoldersSortField Order, bool Desc, long Offset = 0, long Limit = 10)
+        public NodeApi.TokenHoldersResult TokenHoldersGet(string Token, NodeApi.TokenHoldersSortField Order, bool Desc, long Offset = 0, long Limit = 10)
         {
             try
             {
                 Client client_ = new Client(ip, port, "", "", "");
-                return client_.TokenHoldersGet(Token,Offset,Limit,Order,Desc);
+                return client_.TokenHoldersGet(Base58Check.Base58CheckEncoding.DecodePlain(Token),Offset,Limit,Order,Desc);
             }
             catch (Exception e)
             {
