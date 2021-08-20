@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="netcs" />
+    <None Remove="csNet" />
+    <None Remove="bk.test" />
+    <None Remove="Centr.NetCS" />
+    <None Remove="Credits.Blockchain" />
+    <None Remove="Newtonsoft.Json" />
+    <None Remove="ObjectDumper.NET" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Centr.NetCS" Version="0.2.0.1-Beta" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="ObjectDumper.NET" Version="3.1.21178.1" />
+  </ItemGroup>
+</Project>
