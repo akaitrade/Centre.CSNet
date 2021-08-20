@@ -3,6 +3,7 @@
 Third Party Library for implementing Credits Blockchain in .NET
 
 ## Installation of NuGet
+https://www.nuget.org/packages/Centr.NetCS
 ```
 pm> Install-Package Centr.CSNet -Version 1.0.0
 ```
