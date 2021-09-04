@@ -19,6 +19,9 @@ Centre is providing an easy way of connecting to the Credits Blockchain where th
 For All Centre build Libraries there is detailed documentation which can be found here:
 https://centr.gitbook.io/netcs
 
+## Testing
+Tested for Xamarin and normal console applications
+
 ## Connector Object
 
 In order to get the library working we first need to initialize the Connector object
